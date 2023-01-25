@@ -9,9 +9,10 @@ import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.services.CouserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CouserServiceImpl implements CouserService  {
@@ -40,6 +41,21 @@ public class CouserServiceImpl implements CouserService  {
             moduleRepository.deleteAll(moduleModelList);
         }
         courseRepository.delete(courseModel);
+    }
+
+    @Override
+    public CourseModel save(CourseModel couseModel) {
+        return courseRepository.save(couseModel);
+    }
+
+    @Override
+    public Optional<CourseModel> findById(UUID courseId) {
+        return courseRepository.findById(courseId);
+    }
+
+    @Override
+    public List<CourseModel> findAll() {
+        return courseRepository.findAll();
     }
 
 }
