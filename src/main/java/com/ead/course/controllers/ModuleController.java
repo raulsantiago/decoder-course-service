@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+//@RequestMapping("/modules")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ModuleController {
 
@@ -33,7 +33,7 @@ public class ModuleController {
     @Autowired
     CouserService couserService;
 
-    @PostMapping("courses/{courseId}/modules")
+    @PostMapping("/courses/{courseId}/modules")
     public ResponseEntity<Object> saveModule(@PathVariable(value = "courseId") UUID courseId,
                                              @RequestBody @Valid ModuleDto moduleDto){
         Optional<CourseModel> couseModelOptinal = couserService.findById(courseId);
