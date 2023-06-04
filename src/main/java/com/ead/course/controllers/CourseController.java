@@ -2,7 +2,7 @@ package com.ead.course.controllers;
 
 import com.ead.course.dtos.CourseDto;
 import com.ead.course.models.CourseModel;
-import com.ead.course.services.CouserService;
+import com.ead.course.services.CourseService;
 import com.ead.course.specifications.SpecificationTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.UUID;
 public class CourseController {
 
     @Autowired
-    CouserService couserService;
+    CourseService courseService;
 
     @PostMapping
     public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseDto courseDto){
@@ -34,23 +34,23 @@ public class CourseController {
         BeanUtils.copyProperties(courseDto, couseModel);
         couseModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
         couseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.CREATED).body(couserService.save(couseModel));
+        return ResponseEntity.status(HttpStatus.CREATED).body(courseService.save(couseModel));
     }
 
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Object> deleteCouse(@PathVariable(value = "courseId") UUID courseId){
-        Optional<CourseModel> couseModelOptinal = couserService.findById(courseId);
+        Optional<CourseModel> couseModelOptinal = courseService.findById(courseId);
         if(!couseModelOptinal.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coused Not Found.");
         }
-        couserService.delete(couseModelOptinal.get());
+        courseService.delete(couseModelOptinal.get());
         return ResponseEntity.status(HttpStatus.OK).body("Coused deleted successfully.");
     }
 
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> updateCouse(@PathVariable(value = "courseId") UUID courseId,
                                               @RequestBody @Valid CourseDto courseDto){
-        Optional<CourseModel> couseModelOptinal = couserService.findById(courseId);
+        Optional<CourseModel> couseModelOptinal = courseService.findById(courseId);
         if(!couseModelOptinal.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coused Not Found.");
         }
@@ -61,19 +61,19 @@ public class CourseController {
         couseModel.setCourseStatus(courseDto.getCourseStatus());
         couseModel.setCourseLevel(courseDto.getCourseLevel());
         couseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.OK).body(couserService.save(couseModel));
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.save(couseModel));
     }
 
     @GetMapping
     public ResponseEntity<Page<CourseModel>> getAllCouses(SpecificationTemplate.CourseSpec spec,
                                                           @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC)
                                                           Pageable pageable){
-        return ResponseEntity.status(HttpStatus.OK).body(couserService.findAll(spec, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
     }
 
     @GetMapping("/{courseId}")
     public ResponseEntity<Object> getOneCouse(@PathVariable(value = "courseId") UUID courseId){
-        Optional<CourseModel> couseModelOptinal = couserService.findById(courseId);
+        Optional<CourseModel> couseModelOptinal = courseService.findById(courseId);
         if(!couseModelOptinal.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coused Not Found.");
         }

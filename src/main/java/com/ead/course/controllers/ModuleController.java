@@ -3,7 +3,7 @@ package com.ead.course.controllers;
 import com.ead.course.dtos.ModuleDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.models.ModuleModel;
-import com.ead.course.services.CouserService;
+import com.ead.course.services.CourseService;
 import com.ead.course.services.ModuleService;
 import com.ead.course.specifications.SpecificationTemplate;
 import org.springframework.beans.BeanUtils;
@@ -31,12 +31,12 @@ public class ModuleController {
     ModuleService moduleService;
 
     @Autowired
-    CouserService couserService;
+    CourseService courseService;
 
     @PostMapping("/courses/{courseId}/modules")
     public ResponseEntity<Object> saveModule(@PathVariable(value = "courseId") UUID courseId,
                                              @RequestBody @Valid ModuleDto moduleDto){
-        Optional<CourseModel> couseModelOptinal = couserService.findById(courseId);
+        Optional<CourseModel> couseModelOptinal = courseService.findById(courseId);
         if(!couseModelOptinal.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Module Not Found.");
         }

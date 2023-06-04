@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CouserService {
+public interface CourseService {
 
     void delete(CourseModel courseModel);
 
